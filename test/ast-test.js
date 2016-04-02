@@ -22,6 +22,24 @@ describe('tript ast', function() {
     })
   })
 
+  describe('LiteralNumber', function() {
+    it('expects a value', function() {
+      (function() {
+        ast.LiteralNumber()
+      }).should.throw(/value/)
+    })
+
+    it('validates numbers', function() {
+      ast.LiteralNumber({
+        value: 0
+      }).should.have.property('value', 0)
+
+      ast.LiteralNumber({
+        value: 42
+      }).should.have.property('value', 42)
+    })
+  })
+
   describe('And', function() {
     it('expects children', function() {
       (function() {
@@ -85,6 +103,76 @@ describe('tript ast', function() {
 
     it('validates non-empty children', function() {
       ast.Or({
+        children: [
+          ast.LiteralBoolean({ value: false })
+        ]
+      }).should.have.property('children').that.has.lengthOf(1)
+    })
+  })
+
+  describe('Sum', function() {
+    it('expects children', function() {
+      (function() {
+        ast.Sum()
+      }).should.throw(/children/)
+    })
+
+    it('validates empty children', function() {
+      ast.Sum({
+        children: []
+      }).should.have.property('children').that.has.lengthOf(0)
+    })
+
+    // TODO: implement
+    it('expects a child expression')//, function() {
+    //  (function() {
+    //    ast.Sum({
+    //      children: [
+    //        {
+    //          foo: 'bar'
+    //        }
+    //      ]
+    //    })
+    //  }).should.throw(/children/)
+    //})
+
+    it('validates non-empty children', function() {
+      ast.Sum({
+        children: [
+          ast.LiteralNumber({ value: 42 })
+        ]
+      }).should.have.property('children').that.has.lengthOf(1)
+    })
+  })
+
+  describe('Equal', function() {
+    it('expects children', function() {
+      (function() {
+        ast.Equal()
+      }).should.throw(/children/)
+    })
+
+    it('validates empty children', function() {
+      ast.Equal({
+        children: []
+      }).should.have.property('children').that.has.lengthOf(0)
+    })
+
+    // TODO: implement
+    it('expects a child expression')//, function() {
+    //  (function() {
+    //    ast.Equal({
+    //      children: [
+    //        {
+    //          foo: 'bar'
+    //        }
+    //      ]
+    //    })
+    //  }).should.throw(/children/)
+    //})
+
+    it('validates non-empty children', function() {
+      ast.Equal({
         children: [
           ast.LiteralBoolean({ value: false })
         ]
